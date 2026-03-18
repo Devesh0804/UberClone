@@ -4,7 +4,7 @@ import { validationResult } from "express-validator";
 import creatUser from "../Services/user.service.js";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt'
-
+import BlackListToken from "../Models/BlackListtoken.model.js";
 
 dotenv.config();
 
@@ -70,7 +70,32 @@ export const userLogin = async (req, res, next) => {
         res.status(401).json({ message: "Invalid password " })
     }
 
-    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET)
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET,{expiresIn : "24h"})
+    
+     res.cookie('token',token);
 
     res.status(200).json({ token, user })
+}
+
+
+
+export const getUserProfile = async (req,res,next) =>{
+     const firstName =  req.user.fullName.firstName;
+    const LastName =   req.user.fullName.lastName;
+    const fullName = firstName + " " + LastName;
+     res.send(`Hello ${fullName}`);
+}
+
+
+
+export const logoutUser = async(req,res,next)=>{
+     
+
+     const token = req.cookies.token || req.headers.authorization.split(' ')[1];
+     
+     await BlackListToken.create({token})
+     res.clearCookie('token');
+
+     res.status(200).json({message:"logged Out"});
+
 }

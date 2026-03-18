@@ -159,14 +159,97 @@ application/json
 
 ---
 
+## User Profile Endpoint
+
+### Endpoint URL
+```
+GET /user/profile
+```
+
+---
+
+## Description
+The profile endpoint returns the authenticated user's basic profile info. It requires a valid JWT token in the `Authorization` header or valid `token` cookie.
+
+---
+
+## Request
+
+### Method
+`GET`
+
+### Headers
+- `Authorization: Bearer <token>` (preferred)
+- or `Cookie: token=<token>`
+
+---
+
+## Response
+
+### Success Response (Status: 200 OK)
+
+```json
+{
+  "message": "Hello John Doe"
+}
+```
+
+---
+
 ## Status Codes
 
 | Status Code | Description | Scenario |
 |-------------|-------------|----------|
-| **200** | OK - User logged in successfully | Credentials valid, JWT token generated and returned |
-| **400** | Bad Request | Validation errors |
-| **401** | Unauthorized | Invalid email or password |
-| **500** | Internal Server Error | Server-side error during login |
+| **200** | OK - Profile retrieved | Valid token and authenticated user |
+| **401** | Unauthorized | Missing or invalid token |
+| **500** | Internal Server Error | Server-side error |
+
+---
+
+## User Logout Endpoint
+
+### Endpoint URL
+```
+GET /user/logout
+```
+
+---
+
+## Description
+The logout endpoint invalidates the current JWT by adding it to the blacklist and clearing the cookie.
+
+---
+
+## Request
+
+### Method
+`GET`
+
+### Headers
+- `Authorization: Bearer <token>`
+- or cookie `token=<token>`
+
+---
+
+## Response
+
+### Success Response (Status: 200 OK)
+
+```json
+{
+  "message": "logged Out"
+}
+```
+
+---
+
+## Status Codes
+
+| Status Code | Description | Scenario |
+|-------------|-------------|----------|
+| **200** | OK - User logged out | Token blacklisted and cookie cleared |
+| **401** | Unauthorized | Missing or invalid token |
+| **500** | Internal Server Error | Server-side error |
 
 ---
 
@@ -504,7 +587,7 @@ const registerUser = async () => {
       },
       email: 'john.doe@example.com',
       phoneNo: '9876543210',
-      password: 'secure123'
+     
     })
   });
 
