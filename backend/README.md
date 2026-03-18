@@ -86,13 +86,87 @@ application/json
 
 ---
 
+## User Login Endpoint
+
+### Endpoint URL
+```
+POST /user/login
+```
+
+---
+
+## Description
+The user login endpoint allows existing users to authenticate with their email and password. It validates user input, checks credentials, and returns a JWT token upon successful login.
+
+---
+
+## Request
+
+### Method
+`POST`
+
+### Content-Type
+```
+application/json
+```
+
+### Request Body
+
+```json
+{
+  "email": "string",
+  "password": "string"
+}
+```
+
+### Required Fields
+
+| Field | Type | Validation Rules | Description |
+|-------|------|------------------|-------------|
+| `email` | String | Valid email format | User's email address |
+| `password` | String | Minimum 6 characters | User's password |
+
+### Example Request
+
+```json
+{
+  "email": "john.doe@example.com",
+  "password": "secure123"
+}
+```
+
+---
+
+## Response
+
+### Success Response (Status: 200 OK)
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "_id": "507f1f77bcf86cd799439011",
+    "fullName": {
+      "firstName": "John",
+      "lastName": "Doe"
+    },
+    "email": "john.doe@example.com",
+    "phoneNo": "9876543210",
+    "socketID": null
+  }
+}
+```
+
+---
+
 ## Status Codes
 
 | Status Code | Description | Scenario |
 |-------------|-------------|----------|
-| **200** | OK - User registered successfully | User account created, JWT token generated and returned |
-| **400** | Bad Request | Validation errors or user already exists |
-| **500** | Internal Server Error | Server-side error during registration |
+| **200** | OK - User logged in successfully | Credentials valid, JWT token generated and returned |
+| **400** | Bad Request | Validation errors |
+| **401** | Unauthorized | Invalid email or password |
+| **500** | Internal Server Error | Server-side error during login |
 
 ---
 

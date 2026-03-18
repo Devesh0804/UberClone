@@ -40,9 +40,9 @@ const UserSchema = new mongoose.Schema({
 
 
 
-UserSchema.method.ComparePassword = ( async (password)=>{
+UserSchema.methods.ComparePassword =  async function (password){
   return  bcrypt.compare(password,this.password)
-})
+}
 
 UserSchema.statics.hashPassword = ( async (password)=>{
     return await bcrypt.hash(password , 10);
