@@ -1,5 +1,5 @@
 import express from 'express';
-import { getUserProfile, logoutUser, userLogin, userRegister } from '../Cottroler/user.controllers.js';
+import { getUserProfile, logoutUser, userLogin, userRegister } from '../Cottroler/user.controller.js';
 import { body } from 'express-validator';
 import userAuth from '../middlewares/auth.js';
 
@@ -25,7 +25,7 @@ router.post('/login',[
 
 router.get('/profile',userAuth,getUserProfile)
 
-router.get('/logout',userAuth,logoutUser)
+
 
 
 export default router;
